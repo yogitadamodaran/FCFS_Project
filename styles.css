@@ -1,0 +1,928 @@
+/* ============================================
+   PASTEL AESTHETIC - FCFS SCHEDULING
+   Soft, dreamy, and cozy design
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Nunito:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Pastel Color Palette */
+  --pastel-pink: #ffd6e8;
+  --pastel-lavender: #e8d5ff;
+  --pastel-peach: #ffe5d9;
+  --pastel-mint: #d4f4e0;
+  --pastel-blue: #d4e8ff;
+  --pastel-yellow: #fff5d6;
+  --pastel-coral: #ffdfd8;
+  
+  /* Soft backgrounds */
+  --bg-primary: #faf7f2;
+  --bg-secondary: #ffffff;
+  --bg-accent: #fffbf7;
+  
+  /* Pastel text colors */
+  --text-primary: #4a4a4a;
+  --text-secondary: #8b8b8b;
+  --text-muted: #b8b8b8;
+  --text-dark: #2d2d2d;
+  
+  /* Soft borders */
+  --border-pastel: #f0e6e0;
+  --border-soft: #e8d5d0;
+  
+  /* Pinterest-style shadows */
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-large: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, 
+    var(--pastel-pink) 0%, 
+    var(--pastel-lavender) 25%, 
+    var(--pastel-blue) 50%, 
+    var(--pastel-mint) 75%, 
+    var(--pastel-pink) 100%);
+  background-size: 400% 400%;
+  animation: gentleGradient 20s ease infinite;
+  color: var(--text-primary);
+  overflow-x: hidden;
+  position: relative;
+  line-height: 1.7;
+}
+
+@keyframes gentleGradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ========== Floating Pastel Shapes ========== */
+.background-gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 15% 30%, rgba(255, 214, 232, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 85% 70%, rgba(232, 213, 255, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(212, 228, 255, 0.3) 0%, transparent 60%);
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.floating-shapes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.15;
+  animation: gentleFloat 30s infinite ease-in-out;
+  filter: blur(60px);
+}
+
+.shape-1 {
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-peach) 100%);
+  top: 5%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, var(--pastel-lavender) 0%, var(--pastel-blue) 100%);
+  top: 55%;
+  right: 5%;
+  animation-delay: 10s;
+}
+
+.shape-3 {
+  width: 450px;
+  height: 450px;
+  background: linear-gradient(135deg, var(--pastel-mint) 0%, var(--pastel-yellow) 100%);
+  bottom: 5%;
+  left: 45%;
+  animation-delay: 20s;
+}
+
+@keyframes gentleFloat {
+  0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(40px, -40px) scale(1.05) rotate(5deg);
+  }
+  66% {
+    transform: translate(-30px, 30px) scale(0.95) rotate(-5deg);
+  }
+}
+
+/* ========== Header - Pinterest Style ========== */
+header {
+  padding: 50px 24px 35px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), transparent);
+  backdrop-filter: blur(20px);
+}
+
+.header-content {
+  animation: gentleSlideDown 0.8s ease-out;
+}
+
+@keyframes gentleSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.main-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.2rem;
+  font-weight: 800;
+  position: relative;
+  letter-spacing: -1px;
+  margin-bottom: 14px;
+  line-height: 1.2;
+  z-index: 10;
+  display: inline-block;
+}
+
+.title-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.title-main-text {
+  color: #b46ad8;
+  position: relative;
+  display: inline-block;
+  /* Simple white outline for visibility */
+  text-shadow: 
+    1px 1px 0 rgba(255, 255, 255, 0.9),
+    -1px -1px 0 rgba(255, 255, 255, 0.9),
+    1px -1px 0 rgba(255, 255, 255, 0.9),
+    -1px 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.title-accent {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #8a6ad8;
+  position: relative;
+  display: inline-block;
+  /* Simple white outline for visibility */
+  text-shadow: 
+    1px 1px 0 rgba(255, 255, 255, 0.9),
+    -1px -1px 0 rgba(255, 255, 255, 0.9),
+    1px -1px 0 rgba(255, 255, 255, 0.9),
+    -1px 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.title-icon {
+  display: inline-block;
+  animation: softBounce 4s ease-in-out infinite;
+  margin-right: 14px;
+  filter: drop-shadow(0 2px 10px rgba(212, 165, 184, 0.3));
+}
+
+@keyframes softBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-3px) scale(1.03); }
+}
+
+.title-accent {
+  font-size: 2.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #e8b8ff 0%, #b8d4ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 6px rgba(232, 184, 255, 0.3));
+}
+
+.subtitle {
+  color: #8b7a9a;
+  font-size: 1.15rem;
+  font-weight: 400;
+  margin-top: 10px;
+  letter-spacing: 0.3px;
+  font-style: italic;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+/* ========== Main Layout ========== */
+#app {
+  display: flex;
+  gap: 30px;
+  padding: 28px;
+  max-width: 1600px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.left {
+  width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  animation: gentleSlideInLeft 1s ease-out;
+}
+
+.right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  animation: gentleSlideInRight 1s ease-out;
+}
+
+@keyframes gentleSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes gentleSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ========== Pinterest-Style Cards ========== */
+.card {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: var(--shadow-medium);
+  border: 1.5px solid var(--border-pastel);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 5;
+  backdrop-filter: blur(10px);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--border-soft);
+}
+
+.card-glow {
+  position: relative;
+}
+
+.card-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    var(--pastel-pink) 0%, 
+    var(--pastel-lavender) 25%,
+    var(--pastel-blue) 50%,
+    var(--pastel-mint) 75%,
+    var(--pastel-pink) 100%);
+  background-size: 200% 100%;
+  border-radius: 24px 24px 0 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.card-glow:hover::before {
+  opacity: 0.8;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 26px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid var(--border-pastel);
+}
+
+.card-icon {
+  font-size: 1.6rem;
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.card h2, .card h3, .card h4 {
+  margin: 0;
+  color: var(--text-dark);
+  font-weight: 600;
+  font-family: 'Playfair Display', serif;
+  letter-spacing: -0.2px;
+}
+
+.card h2 {
+  font-size: 1.9rem;
+}
+
+.card h3 {
+  font-size: 1.6rem;
+}
+
+.card h4 {
+  font-size: 1.35rem;
+}
+
+/* ========== Pastel Inputs ========== */
+.input-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+}
+
+.label-hint {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.styled-input {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 16px;
+  border: 2px solid var(--border-pastel);
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-bottom: 22px;
+  font-family: 'Nunito', sans-serif;
+  position: relative;
+  z-index: 10;
+  cursor: text;
+  color: var(--text-dark);
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+.styled-input:hover {
+  border-color: var(--pastel-lavender);
+  background: #ffffff;
+  box-shadow: var(--shadow-soft);
+}
+
+.styled-input:focus {
+  outline: none;
+  border-color: var(--pastel-blue);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(212, 232, 255, 0.4),
+              var(--shadow-medium);
+  transform: translateY(-2px);
+}
+
+.styled-input::-webkit-outer-spin-button,
+.styled-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ========== Pastel Pinterest Buttons ========== */
+.btn {
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid var(--border-pastel);
+  padding: 14px 24px;
+  border-radius: 18px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Nunito', sans-serif;
+  position: relative;
+  overflow: hidden;
+  color: var(--text-dark);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-soft);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 214, 232, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s, height 0.5s;
+}
+
+.btn:hover::before {
+  width: 350px;
+  height: 350px;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-large);
+  border-color: var(--pastel-lavender);
+}
+
+.btn:active {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-lavender) 100%);
+  color: #6b4a5f;
+  border: none;
+  box-shadow: var(--shadow-medium);
+}
+
+.btn-primary:hover {
+  box-shadow: var(--shadow-hover);
+  background: linear-gradient(135deg, var(--pastel-lavender) 0%, var(--pastel-pink) 100%);
+}
+
+.btn-glow {
+  position: relative;
+}
+
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 18px;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--pastel-pink), var(--pastel-lavender), var(--pastel-blue));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s;
+  z-index: -1;
+}
+
+.btn-glow:hover::after {
+  opacity: 0.4;
+}
+
+.btn-pulse {
+  background: linear-gradient(135deg, var(--pastel-peach) 0%, var(--pastel-coral) 100%);
+  color: #8b5a4f;
+  border: none;
+  box-shadow: var(--shadow-medium);
+}
+
+.btn-pulse:hover {
+  box-shadow: var(--shadow-hover);
+  background: linear-gradient(135deg, var(--pastel-coral) 0%, var(--pastel-peach) 100%);
+}
+
+.btn-green {
+  background: linear-gradient(135deg, var(--pastel-mint) 0%, #c8eed8 100%);
+  color: #4a7a5f;
+  border: none;
+  box-shadow: var(--shadow-medium);
+}
+
+.btn-green:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.btn-orange {
+  background: linear-gradient(135deg, var(--pastel-peach) 0%, #ffd6c4 100%);
+  color: #8b6a5f;
+  border: none;
+  box-shadow: var(--shadow-medium);
+}
+
+.btn-orange:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.6);
+  border: 2px dashed var(--border-pastel);
+  color: var(--text-secondary);
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-style: solid;
+  border-color: var(--pastel-lavender);
+  color: var(--text-dark);
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ========== Pinterest Table ========== */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 22px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1.5px solid var(--border-pastel);
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: var(--shadow-soft);
+}
+
+th, td {
+  padding: 16px 18px;
+  text-align: center;
+  border: none;
+}
+
+th {
+  background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-lavender) 100%);
+  color: #6b4a5f;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.8px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+tbody tr {
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  border-bottom: 1px solid var(--border-pastel);
+}
+
+tbody tr:last-child {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: linear-gradient(135deg, rgba(255, 214, 232, 0.3) 0%, rgba(232, 213, 255, 0.3) 100%);
+  transform: scale(1.02);
+}
+
+tbody input {
+  width: 95px;
+  padding: 12px 14px;
+  border: 2px solid var(--border-pastel);
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: 'Nunito', sans-serif;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-dark);
+}
+
+tbody input:focus {
+  outline: none;
+  border-color: var(--pastel-blue);
+  box-shadow: 0 0 0 4px rgba(212, 232, 255, 0.4);
+  background: #ffffff;
+}
+
+/* ========== Row Layout ========== */
+.row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+/* ========== Canvas & Gantt Chart ========== */
+.chart-card {
+  padding: 32px;
+}
+
+.canvas-wrapper {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-medium);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1.5px solid var(--border-pastel);
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  background: #f5f1ed;
+}
+
+/* ========== Pastel Sliders ========== */
+.timeline-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 28px;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(255, 214, 232, 0.2) 0%, rgba(232, 213, 255, 0.2) 100%);
+  border-radius: 18px;
+  border: 1.5px solid var(--border-pastel);
+}
+
+.timeline-slider,
+.speed-slider {
+  flex: 1;
+  height: 8px;
+  border-radius: 20px;
+  background: var(--border-pastel);
+  outline: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.timeline-slider:hover,
+.speed-slider:hover {
+  height: 10px;
+}
+
+.timeline-slider::-webkit-slider-thumb,
+.speed-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-lavender) 100%);
+  cursor: pointer;
+  box-shadow: var(--shadow-medium);
+  transition: all 0.3s ease;
+  border: 3px solid white;
+}
+
+.timeline-slider::-webkit-slider-thumb:hover,
+.speed-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: var(--shadow-large);
+}
+
+.timeline-slider::-moz-range-thumb,
+.speed-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-lavender) 100%);
+  cursor: pointer;
+  border: 3px solid white;
+  box-shadow: var(--shadow-medium);
+}
+
+.timeline-slider::-webkit-slider-runnable-track,
+.speed-slider::-webkit-slider-runnable-track {
+  height: 8px;
+  background: linear-gradient(90deg, var(--pastel-pink) 0%, var(--pastel-lavender) 50%, var(--pastel-blue) 100%);
+  border-radius: 20px;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.legend-icon {
+  font-size: 1.1rem;
+  opacity: 0.8;
+}
+
+.speed-display {
+  background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-lavender) 100%);
+  color: #6b4a5f;
+  padding: 8px 16px;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  min-width: 60px;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+
+/* ========== Pastel Statistics Card ========== */
+.stats-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 214, 232, 0.15) 100%);
+  border: 1.5px solid var(--border-pastel);
+  text-align: center;
+  transition: all 0.4s ease;
+}
+
+.stats-card:hover {
+  border-color: var(--pastel-lavender);
+  box-shadow: var(--shadow-hover);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(232, 213, 255, 0.2) 100%);
+}
+
+#statsTable {
+  width: 100%;
+  margin: 22px 0 0;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+#statsTable th {
+  background: transparent;
+  color: var(--text-dark);
+  font-weight: 600;
+  text-transform: none;
+  text-align: left;
+  font-size: 1rem;
+  padding: 16px 24px;
+  border-bottom: 2px solid var(--border-pastel);
+  border-top: none;
+  font-family: 'Playfair Display', serif;
+}
+
+#statsTable td {
+  text-align: right;
+  padding: 16px 24px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border-bottom: 2px solid var(--border-pastel);
+}
+
+.stat-value {
+  background: linear-gradient(135deg, #d4a5b8 0%, #b8a5d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.4rem !important;
+  font-family: 'Playfair Display', serif;
+}
+
+#statsTable tr:hover {
+  background: linear-gradient(135deg, rgba(255, 214, 232, 0.2) 0%, rgba(232, 213, 255, 0.2) 100%);
+}
+
+#statsTable tr:last-child th,
+#statsTable tr:last-child td {
+  border-bottom: none;
+}
+
+/* ========== Footer - Pinterest Style ========== */
+.footer {
+  text-align: center;
+  padding: 40px 24px 35px;
+  margin-top: 50px;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.6), transparent);
+  backdrop-filter: blur(15px);
+}
+
+.footer-text {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.footer-name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  background: linear-gradient(135deg, #d4a5b8 0%, #b8a5d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+
+/* ========== Responsive Design ========== */
+@media (max-width: 1200px) {
+  #app {
+    flex-direction: column;
+  }
+  
+  .left {
+    width: 100%;
+  }
+  
+  .main-title {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 2rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .card {
+    padding: 28px;
+  }
+  
+  .row {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}
+
+/* ========== Animations ========== */
+@keyframes gentleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: gentleFadeIn 0.6s ease-out;
+}
+
+/* ========== Pastel Scrollbar ========== */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 214, 232, 0.2);
+  border-radius: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-lavender) 100%);
+  border-radius: 12px;
+  border: 2px solid rgba(255, 214, 232, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--pastel-lavender) 0%, var(--pastel-blue) 100%);
+}
