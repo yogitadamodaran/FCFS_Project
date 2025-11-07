@@ -1,131 +1,231 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FCFS Scheduling</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
+import { computeFCFS } from "./fcfs_algo.js";
+import { renderGantt } from "./anim.js";
 
-<body>
-  <div class="background-gradient"></div>
-  <div class="floating-shapes">
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-    <div class="shape shape-3"></div>
-  </div>
-  
-  <header>
-    <div class="header-content">
-      <h1 class="main-title">
-        <span class="title-wrapper">
-          <span class="title-icon">⚡</span>
-          <span class="title-main-text">First Come First Serve</span>
-          <span class="title-accent">(FCFS)</span>
-        </span>
-      </h1>
-      <p class="subtitle">Learn with ease!</p>
-    </div>
-  </header>
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("✅ FCFS script loaded successfully");
 
-  <main id="app">
-    <section class="left">
-      <div class="card card-glow">
-        <div class="card-header">
-          <span class="card-icon">📝</span>
-          <h4>Process Input</h4>
-        </div>
-        <label class="input-label">
-          <span>Number of Processes</span>
-          <span class="label-hint">(1-20)</span>
-        </label>
-        <input id="numProcesses" type="number" min="1" max="20" value="3" class="styled-input" />
-        <button id="generateTable" class="btn btn-pulse">✨ Generate Table</button>
+  const numProcessesInput = document.getElementById("numProcesses");
+  const generateTableBtn = document.getElementById("generateTable");
+  const runBtn = document.getElementById("runFCFS");
+  const resetBtn = document.getElementById("resetBtn");
+  const playBtn = document.getElementById("playBtn");
+  const pauseBtn = document.getElementById("pauseBtn");
+  const stepBackBtn = document.getElementById("stepBack");
+  const stepFwdBtn = document.getElementById("stepFwd");
+  const timeline = document.getElementById("timeline");
+  const speedSlider = document.getElementById("speed");
+  const speedValue = document.getElementById("speedValue");
 
-        <table id="processTable">
-          <thead>
-            <tr><th>PID</th><th>Arrival</th><th>Burst</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+  const tableBody = document.querySelector("#processTable tbody");
+  const curTime = document.getElementById("curTime");
+  const avgWait = document.getElementById("avgWait");
+  const avgTurn = document.getElementById("avgTurn");
+  const canvas = document.getElementById("ganttCanvas");
+  const ctx = canvas.getContext("2d");
 
-        <div class="row">
-          <button id="runFCFS" class="btn primary btn-glow">🚀 Build Schedule</button>
-          <button id="resetBtn" class="btn ghost">🔄 Reset</button>
-        </div>
-      </div>
+  let fcfsData = null;
+  let currentTime = 0;
+  let animTimer = null;
+  let isPlaying = false;
 
-      <div class="card card-glow">
-        <div class="card-header">
-          <span class="card-icon">🎮</span>
-          <h4>Controls</h4>
-        </div>
-        <div class="row">
-          <button id="playBtn" class="btn green btn-icon">▶️ Play</button>
-          <button id="pauseBtn" class="btn orange btn-icon">⏸️ Pause</button>
-          <button id="stepBack" class="btn btn-icon">◀️ Step</button>
-          <button id="stepFwd" class="btn btn-icon">Step ▶️</button>
-        </div>
+  // ✅ Generate Table
+  generateTableBtn.addEventListener("click", () => {
+    const n = parseInt(numProcessesInput.value);
 
-        <label class="input-label">
-          <span>⚡ Animation Speed</span>
-          <span id="speedValue" class="speed-display">1.0x</span>
-        </label>
-        <input id="speed" type="range" min="0.25" max="3" step="0.25" value="1" class="speed-slider" />
+    if (isNaN(n) || n <= 0) {
+      alert("Please enter a valid number of processes (1–20).");
+      return;
+    }
 
-        <div class="row">
-          <button id="exportScreenshot" class="btn">Export Screenshot</button>
-        </div>
-      </div>
-    </section>
+    tableBody.innerHTML = ""; // clear old table
 
-    <section class="right">
-      <div class="card card-glow chart-card">
-        <div class="card-header">
-          <span class="card-icon">📊</span>
-          <h2>Gantt Chart</h2>
-        </div>
-        <div class="canvas-wrapper">
-          <canvas id="ganttCanvas" width="1000" height="260"></canvas>
-        </div>
+    for (let i = 0; i < n; i++) {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>P${i + 1}</td>
+        <td><input type="number" class="arrival" min="0" value="${i}" /></td>
+        <td><input type="number" class="burst" min="1" value="${i + 1}" /></td>
+      `;
+      tableBody.appendChild(row);
+    }
 
-        <div class="timeline-row">
-          <input id="timeline" type="range" min="0" max="0" value="0" class="timeline-slider" />
-          <div class="legend">
-            <span class="legend-icon">🎯</span>
-            Use timeline or step controls to navigate
-          </div>
-        </div>
-      </div>
+    // Add animation to table rows
+    const rows = tableBody.querySelectorAll("tr");
+    rows.forEach((row, idx) => {
+      row.style.opacity = "0";
+      row.style.transform = "translateY(-10px)";
+      setTimeout(() => {
+        row.style.transition = "all 0.3s ease";
+        row.style.opacity = "1";
+        row.style.transform = "translateY(0)";
+      }, idx * 50);
+    });
 
-      <!-- 🧮 Statistics card moved here below the Gantt Chart -->
-      <div class="card stats-card card-glow">
-        <div class="card-header">
-          <span class="card-icon">📈</span>
-          <h3>Statistics</h3>
-        </div>
-        <table id="statsTable">
-          <tr>
-            <th>⏱️ Current Time</th>
-            <td id="curTime" class="stat-value">0</td>
-          </tr>
-          <tr>
-            <th>⏳ Average Waiting Time</th>
-            <td id="avgWait" class="stat-value">-</td>
-          </tr>
-          <tr>
-            <th>🔄 Average Turnaround Time</th>
-            <td id="avgTurn" class="stat-value">-</td>
-          </tr>
-        </table>
-      </div>
-    </section>
-  </main>
+    console.log("✅ Table generated with", n, "processes");
+  });
 
-  <footer class="footer">
-    <p class="footer-text">Made with 💕 by <span class="footer-name">Yogita Damodaran</span></p>
-  </footer>
+  // ✅ Speed slider update display
+  speedSlider.addEventListener("input", () => {
+    const speed = parseFloat(speedSlider.value);
+    speedValue.textContent = `${speed.toFixed(2)}x`;
+    // Update animation speed if playing
+    if (isPlaying && animTimer) {
+      clearInterval(animTimer);
+      const delay = 1000 / speed;
+      animTimer = setInterval(() => {
+        if (currentTime >= fcfsData.timeSpan.max) {
+          clearInterval(animTimer);
+          isPlaying = false;
+          return;
+        }
+        currentTime++;
+        timeline.value = currentTime;
+        curTime.textContent = currentTime;
+        renderGantt(fcfsData.perUnit, fcfsData.segments, currentTime, fcfsData.results);
+      }, delay);
+    }
+  });
 
-  <script type="module" src="js/main.js"></script>
-</body>
-</html>
+  // Initialize speed display
+  if (speedValue) {
+    speedValue.textContent = `${parseFloat(speedSlider.value).toFixed(2)}x`;
+  }
+
+  // ✅ Build & Run (Compute FCFS)
+  runBtn.addEventListener("click", () => {
+    const rows = tableBody.querySelectorAll("tr");
+    if (rows.length === 0) {
+      alert("Please generate the process table first.");
+      return;
+    }
+
+    const processes = Array.from(rows).map((row) => {
+      const pid = row.cells[0].textContent.trim();
+      const arrival = Number(row.querySelector(".arrival").value);
+      const burst = Number(row.querySelector(".burst").value);
+      return { pid, arrival, burst };
+    });
+
+    fcfsData = computeFCFS(processes);
+
+    // Reset state for animation
+    currentTime = fcfsData.timeSpan?.min ?? 0;
+    timeline.min = currentTime;
+    timeline.max = fcfsData.timeSpan?.max ?? 0;
+    timeline.value = currentTime;
+
+    avgWait.textContent = fcfsData.avgWaiting.toFixed(2);
+    avgTurn.textContent = fcfsData.avgTurnaround.toFixed(2);
+    curTime.textContent = currentTime;
+
+    // Add success animation
+    runBtn.style.transform = "scale(0.95)";
+    setTimeout(() => {
+      runBtn.style.transform = "scale(1)";
+    }, 150);
+
+    renderGantt(fcfsData.perUnit, fcfsData.segments, currentTime, processes);
+
+    console.log("✅ FCFS build done", fcfsData);
+  });
+
+  // ✅ Play animation
+  playBtn.addEventListener("click", () => {
+    if (!fcfsData) {
+      alert("Please build the schedule first!");
+      return;
+    }
+    if (isPlaying) return;
+    isPlaying = true;
+
+    const speed = parseFloat(speedSlider.value);
+    const delay = 1000 / speed; // ms per time unit
+
+    animTimer = setInterval(() => {
+      if (currentTime >= fcfsData.timeSpan.max) {
+        clearInterval(animTimer);
+        isPlaying = false;
+        return;
+      }
+      currentTime++;
+      timeline.value = currentTime;
+      curTime.textContent = currentTime;
+      renderGantt(fcfsData.perUnit, fcfsData.segments, currentTime, fcfsData.results);
+    }, delay);
+  });
+
+  // ✅ Pause animation
+  pauseBtn.addEventListener("click", () => {
+    if (animTimer) {
+      clearInterval(animTimer);
+      isPlaying = false;
+      console.log("⏸ Animation paused at t =", currentTime);
+    }
+  });
+
+  // ✅ Step forward
+  stepFwdBtn.addEventListener("click", () => {
+    if (!fcfsData) {
+      alert("Please build the schedule first!");
+      return;
+    }
+    if (isPlaying) {
+      pauseBtn.click();
+    }
+    if (currentTime < fcfsData.timeSpan.max) {
+      currentTime++;
+      timeline.value = currentTime;
+      curTime.textContent = currentTime;
+      renderGantt(fcfsData.perUnit, fcfsData.segments, currentTime, fcfsData.results);
+    }
+  });
+
+  // ✅ Step backward
+  stepBackBtn.addEventListener("click", () => {
+    if (!fcfsData) {
+      alert("Please build the schedule first!");
+      return;
+    }
+    if (isPlaying) {
+      pauseBtn.click();
+    }
+    if (currentTime > fcfsData.timeSpan.min) {
+      currentTime--;
+      timeline.value = currentTime;
+      curTime.textContent = currentTime;
+      renderGantt(fcfsData.perUnit, fcfsData.segments, currentTime, fcfsData.results);
+    }
+  });
+
+  // ✅ Timeline manual control
+  timeline.addEventListener("input", () => {
+    if (!fcfsData) return;
+    currentTime = Number(timeline.value);
+    curTime.textContent = currentTime;
+    renderGantt(fcfsData.perUnit, fcfsData.segments, currentTime, fcfsData.results);
+  });
+
+  // ✅ Reset button
+  resetBtn.addEventListener("click", () => {
+    tableBody.innerHTML = "";
+    numProcessesInput.value = "";
+    curTime.textContent = "0";
+    avgWait.textContent = "-";
+    avgTurn.textContent = "-";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    clearInterval(animTimer);
+    fcfsData = null;
+    currentTime = 0;
+    isPlaying = false;
+
+    resetBtn.textContent = "✅ Reset!";
+    resetBtn.disabled = true;
+    setTimeout(() => {
+      resetBtn.textContent = "🔄 Reset";
+      resetBtn.disabled = false;
+    }, 800);
+
+    console.log("✅ Reset complete");
+  });
+});
